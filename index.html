@@ -6,16 +6,18 @@
     <title>Diagrama Canvas - Solar System</title>
     <style>
         :root {
-            --primary: #2563eb;
-            --bg-canvas: #f8fafc;
-            --border-color: #cbd5e1;
-            --text-main: #1e293b;
+            --bg-dark: #0f172a;
+            --bg-canvas: #ffffff;
+            --border-color: #1e293b;
+            --text-dark: #1e293b;
+            --text-light: #ffffff;
+            --accent: #2563eb;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0f172a;
-            color: #f8fafc;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
             margin: 0;
             padding: 20px;
             display: flex;
@@ -25,151 +27,143 @@
 
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         header h1 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             margin: 0;
             color: #38bdf8;
         }
 
         header h2 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 400;
             margin: 5px 0 0 0;
             color: #94a3b8;
         }
 
-        /* Contenedor del Canvas */
-        .canvas-container {
+        /* Contenedor del Lienzo basado exactamente en tu dibujo */
+        .canvas-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            grid-auto-rows: minmax(150px, auto);
-            gap: 15px;
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(2, 180px) 130px;
+            gap: 12px;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1100px;
             background: var(--bg-canvas);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        }
-
-        /* Bloques individuales */
-        .block {
-            background: #ffffff;
-            border: 2px solid var(--border-color);
+            padding: 15px;
             border-radius: 8px;
-            padding: 20px;
-            color: var(--text-main);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* Estilo general para cada recuadro */
+        .box {
+            background: #f8fafc;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            color: var(--text-dark);
             cursor: pointer;
-            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 1.05rem;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             text-align: center;
-            font-weight: bold;
-            font-size: 1.1rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
         }
 
-        .block:hover {
-            border-color: var(--primary);
+        .box:hover {
             background: #eff6ff;
-            transform: translateY(-2px);
+            border-color: var(--accent);
+            transform: scale(1.02);
         }
 
-        /* Posiciones específicas para emular el Lean Canvas */
-        .double-height {
-            grid-row: span 2;
-        }
+        /* Posiciones exactas de las columnas de tu imagen */
+        .col-1-top { grid-column: 1 / 3; grid-row: 1; }
+        .col-1-bot { grid-column: 1 / 3; grid-row: 2; }
 
-        .full-width-bottom {
-            grid-column: span 2;
-            background: #f1f5f9;
-        }
+        .col-2-top { grid-column: 3 / 5; grid-row: 1; }
+        .col-2-bot { grid-column: 3 / 5; grid-row: 2; }
 
-        .center-row {
-            grid-column: 3;
-            grid-row: 1 / span 2;
-        }
+        .col-3-full { grid-column: 5 / 7; grid-row: 1 / 3; }
 
-        /* Ventanas Modales (Cuadros de texto emergentes) */
-        .modal {
+        .col-4-top { grid-column: 7 / 9; grid-row: 1; }
+        .col-4-bot { grid-column: 7 / 9; grid-row: 2; }
+
+        .col-5-full { grid-column: 9 / 11; grid-row: 1 / 3; }
+
+        /* Fila inferior de tu dibujo */
+        .row-bot-left { grid-column: 1 / 6; grid-row: 3; background: #f1f5f9; }
+        .row-bot-right { grid-column: 6 / 11; grid-row: 3; background: #f1f5f9; }
+
+        /* Estilos de la Ventana Emergente (Modal) */
+        .modal-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(4px);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(3px);
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 9999;
         }
 
-        .modal-content {
+        .modal-box {
             background: #ffffff;
-            color: var(--text-main);
-            padding: 30px;
-            border-radius: 12px;
+            color: var(--text-dark);
+            padding: 25px;
+            border-radius: 10px;
             width: 90%;
-            max-width: 500px;
+            max-width: 480px;
             position: relative;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 0.2s ease-out;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
+            animation: popIn 0.2s ease-out;
         }
 
-        @keyframes fadeIn {
-            from { transform: scale(0.9); opacity: 0; }
+        @keyframes popIn {
+            from { transform: scale(0.95); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
 
-        .modal-content h3 {
+        .modal-box h3 {
             margin-top: 0;
-            color: var(--primary);
-            font-size: 1.4rem;
+            color: var(--accent);
+            font-size: 1.3rem;
             border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
+            text-transform: capitalize;
         }
 
-        .modal-content ul {
+        .modal-box ul {
             padding-left: 20px;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
-        .modal-content li {
-            margin-bottom: 10px;
+        .modal-box li {
+            margin-bottom: 8px;
         }
 
-        .close-btn {
+        .close-x {
             position: absolute;
-            top: 15px;
+            top: 12px;
             right: 15px;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
             color: #94a3b8;
             cursor: pointer;
-            transition: color 0.2s;
             border: none;
             background: none;
         }
 
-        .close-btn:hover {
+        .close-x:hover {
             color: #ef4444;
         }
 
-        /* Responsivo para celulares */
-        @media (max-width: 900px) {
-            .canvas-container {
-                grid-template-columns: 1fr;
-            }
-            .double-height, .center-row, .full-width-bottom {
-                grid-column: span 1 !important;
-                grid-row: auto !important;
-            }
+        @media (max-width: 768px) {
+            .canvas-grid { display: flex; flex-direction: column; }
+            .box { min-height: 90px; }
         }
     </style>
 </head>
@@ -180,103 +174,102 @@
         <h2>(Solar System)</h2>
     </header>
 
-    <div class="canvas-container">
+    <div class="canvas-grid">
         <!-- Columna 1 -->
-        <div class="block" onclick="openModal('problema')">1. Problemas</div>
-        <div class="block" onclick="openModal('alternativas')">1b. Alternativas</div>
+        <div class="box col-1-top" onclick="openModal('problemas')">problemas</div>
+        <div class="box col-1-bot" onclick="openModal('alternativas')">alternativas</div>
 
         <!-- Columna 2 -->
-        <div class="block" onclick="openModal('solucion')">4. Solución</div>
-        <div class="block" onclick="openModal('metricas')">8. Métricas</div>
+        <div class="box col-2-top" onclick="openModal('solucion')">solucion</div>
+        <div class="box col-2-bot" onclick="openModal('metricas')">metricas</div>
 
         <!-- Columna 3 -->
-        <div class="block center-row" onclick="openModal('propuesta')">3. Propuesta de Valor</div>
+        <div class="box col-3-full" onclick="openModal('propuesta')">propuesta de valor</div>
 
         <!-- Columna 4 -->
-        <div class="block" onclick="openModal('ventajas')">9. Ventajas Competitivas</div>
-        <div class="block" onclick="openModal('canales')">5. Canales</div>
+        <div class="box col-4-top" onclick="openModal('ventajas')">ventajas competitivas</div>
+        <div class="box col-4-bot" onclick="openModal('canales')">canales</div>
 
         <!-- Columna 5 -->
-        <div class="block double-height" onclick="openModal('segmento')">2. Segmento de Clientes</div>
+        <div class="box col-5-full" onclick="openModal('segmento')">segmento de clientes</div>
 
         <!-- Fila Inferior -->
-        <div class="block full-width-bottom" onclick="openModal('costos')">7. Estructura de Costos</div>
-        <div class="block full-width-bottom" style="grid-column: span 3;" onclick="openModal('ingresos')">6. Flujo de Ingresos</div>
+        <div class="box row-bot-left" onclick="openModal('costos')">estructura de costos</div>
+        <div class="box row-bot-right" onclick="openModal('ingresos')">flujo de ingresos</div>
     </div>
 
-    <!-- VENTANAS EMERGENTES (MODALES) -->
-    <div id="modalContainer" class="modal" onclick="closeModalOnOutsideClick(event)">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal()">&times;</button>
+    <!-- Ventana Emergente Única -->
+    <div id="modalOverlay" class="modal-overlay" onclick="closeOnOutside(event)">
+        <div class="modal-box">
+            <button class="close-x" onclick="closeModal()">&times;</button>
             <h3 id="modalTitle">Título</h3>
             <div id="modalBody">Contenido</div>
         </div>
     </div>
 
     <script>
-        // Datos del Lean Canvas obtenidos de nuestra conversación
+        // Información de los bloques
         const canvasData = {
-            problema: {
-                title: "1. Problemas",
-                content: "<ul><li>Precios muy altos en las tiendas de La Paz debido a que el producto pasa por muchos revendedores.</li><li>Poco stock de piezas modernas: Las tiendas locales suelen tardar meses en traer lo último que sale al mercado.</li><li>Malas garantías: Si una pieza falla, muchas tiendas informales no quieren hacerse cargo o tardan demasiado.</li></ul>"
+            problemas: {
+                title: "problemas",
+                content: "<ul><li>Precios muy altos en las tiendas de La Paz debido a que el producto pasa por muchos revendedores.</li><li>Poco stock de piezas modernas: Las tiendas locales suelen tardar meses en traer lo último del mercado.</li><li>Malas garantías: Muchas tiendas informales no quieren hacerse cargo de fallas o tardan demasiado.</li></ul>"
             },
             alternativas: {
-                title: "1b. Alternativas Existentes",
-                content: "<ul><li>Comprar en las tiendas tradicionales de la Eloy Salmón o centros comerciales tecnológicos.</li><li>Pedir el producto por internet a páginas de afuera (soportando largas esperas y riesgos de pérdida).</li></ul>"
+                title: "alternativas",
+                content: "<ul><li>Comprar en las tiendas tradicionales de la Eloy Salmón o centros comerciales tecnológicos.</li><li>Pedir el producto por internet a páginas de afuera (asumiendo largas esperas y riesgos de pérdida).</li></ul>"
             },
             solucion: {
-                title: "4. Solución",
-                content: "<ul><li>Importación directa: Comprar directamente a los fabricantes o distribuidores grandes de afuera para vender más barato en La Paz.</li><li>Pedidos personalizados: Si un cliente busca una pieza muy específica que no hay en el país, se la traemos por encargo.</li></ul>"
+                title: "solucion",
+                content: "<ul><li>Importación directa: Comprar directamente a distribuidores grandes del exterior para vender más barato en La Paz.</li><li>Pedidos personalizados: Si un cliente busca una pieza muy específica que no hay en el país, se la traemos por encargo.</li></ul>"
             },
             metricas: {
-                title: "8. Métricas Clave",
-                content: "<ul><li>Número de clientes nuevos que nos compran cada mes.</li><li>Cantidad de personas que nos recomiendan con sus amigos después de haber comprado.</li></ul>"
+                title: "metricas",
+                content: "<ul><li>Número de clientes nuevos que nos compran cada mes.</li><li>Cantidad de personas que nos recomiendan con sus conocidos tras su compra.</li></ul>"
             },
             propuesta: {
-                title: "3. Propuesta de Valor",
+                title: "propuesta de valor",
                 content: "<p><strong>'Traemos la mejor tecnología para tu computadora directo del extranjero, al precio más justo de La Paz y con garantía real'.</strong></p>"
             },
             ventajas: {
-                title: "9. Ventaja Competitiva",
-                content: "<ul><li>Rapidez y confianza: Traemos los productos en tiempo récord y ofrecemos un servicio técnico propio que soluciona cualquier falla de fábrica de inmediato, sin rodeos.</li></ul>"
+                title: "ventajas competitivas",
+                content: "<ul><li>Rapidez y confianza: Traemos los productos en tiempo récord y ofrecemos un servicio técnico propio que soluciona cualquier falla de fábrica de inmediato, sin intermediarios.</li></ul>"
             },
             canales: {
-                title: "5. Canales",
+                title: "canales",
                 content: "<ul><li>Venta por redes sociales (videos demostrativos en TikTok y Facebook Marketplace).</li><li>Atención y catálogo rápido a través de WhatsApp.</li><li>Entregas en puntos céntricos y seguros de la ciudad (o envíos a domicilio).</li></ul>"
             },
             segmento: {
-                title: "2. Segmento de Clientes",
+                title: "segmento de clientes",
                 content: "<ul><li>Jóvenes gamers que quieren armar o mejorar sus computadoras para jugar.</li><li>Diseñadores, editores de video y programadores que necesitan equipos potentes para trabajar rápido.</li></ul>"
             },
             costos: {
-                title: "7. Estructura de Costos",
+                title: "estructura de costos",
                 content: "<ul><li>Dinero para comprar la mercadería afuera y pagar el transporte internacional.</li><li>Pago de los impuestos obligatorios en la Aduana de Bolivia.</li><li>Gastos en publicidad por internet para que más gente en La Paz conozca el negocio.</li></ul>"
             },
             ingresos: {
-                title: "6. Flujo de Ingresos",
+                title: "flujo de ingresos",
                 content: "<ul><li>Ganancia por la venta de las piezas de hardware (tarjetas de video, procesadores, memorias, etc.).</li><li>Cobro por el servicio de armado, limpieza y optimización de las computadoras.</li></ul>"
             }
         };
 
-        const modalContainer = document.getElementById('modalContainer');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalBody = document.getElementById('modalBody');
+        const overlay = document.getElementById('modalOverlay');
+        const mTitle = document.getElementById('modalTitle');
+        const mBody = document.getElementById('modalBody');
 
         function openModal(key) {
-            if(canvasData[key]) {
-                      modalTitle.innerText = canvasData[key].title;
-        modalBody.innerHTML = canvasData[key].content;
-        modalContainer.style.display = 'flex';
+            if (canvasData[key]) {
+        mTitle.innerText = canvasData[key].title;
+        mBody.innerHTML = canvasData[key].content;
+        overlay.style.display = 'flex';
     }
 }
 
 function closeModal() {
-    modalContainer.style.display = 'none';
+    overlay.style.display = 'none';
 }
 
-function closeModalOnOutsideClick(event) {
-    if (event.target === modalContainer) {
+function closeOnOutside(event) {
+    if (event.target === overlay) {
         closeModal();
     }
 }
-
