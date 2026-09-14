@@ -25,6 +25,7 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            box-sizing: border-box;
         }
 
         header {
@@ -45,11 +46,16 @@
             color: #94a3b8;
         }
 
-        /* 🔒 REJILLA CON COORDENADAS CONGELADAS (NO SE MUEVE) */
+        /* 🔒 ESTRUCTURA FIJA BASADA STRICTAMENTE EN TU CAPTURA */
         .canvas-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            grid-template-rows: 140px 140px 120px;
+            grid-template-rows: 130px 130px 130px 130px;
+            grid-template-areas:
+                "prob alt prop sol met"
+                "vent can prop seg seg"
+                "cost cost cost seg seg"
+                "ingr ingr ingr seg seg";
             gap: 15px;
             width: 100%;
             max-width: 1200px;
@@ -60,9 +66,20 @@
             box-sizing: border-box;
         }
 
-        /* Estilo base para cada recuadro */
+        /* Asignación de cada bloque a su área fija */
+        .b-prob { grid-area: prob; }
+        .b-alt  { grid-area: alt; }
+        .b-prop { grid-area: prop; border: 2px solid var(--accent) !important; background: var(--accent-bg) !important; }
+        .b-sol  { grid-area: sol; }
+        .b-met  { grid-area: met; }
+        .b-vent { grid-area: vent; }
+        .b-can  { grid-area: can; }
+        .b-seg  { grid-area: seg; background: #f8fafc; }
+        .b-cost { grid-area: cost; background: #f1f5f9; }
+        .b-ingr { grid-area: ingr; background: #f1f5f9; }
+
+        /* Estilo general de los recuadros */
         .box {
-            background: #f8fafc;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 15px;
@@ -74,33 +91,20 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            transition: all 0.2s ease;
+            transition: transform 0.2s, background-color 0.2s;
+            background-color: #f8fafc;
             box-sizing: border-box;
         }
 
         .box:hover {
-            background: var(--accent-bg);
+            background-color: var(--accent-bg);
             border-color: var(--accent);
             transform: scale(1.02);
         }
 
-        /* Posicionamiento milimétrico basado en tu captura */
-        .b-problemas     { grid-column: 1; grid-row: 1; }
-        .b-alternativas  { grid-column: 2; grid-row: 1; }
-        .b-propuesta     { grid-column: 3; grid-row: 1 / span 2; border: 2px solid var(--accent); background: var(--accent-bg); }
-        .b-solucion      { grid-column: 4; grid-row: 1; }
-        .b-metricas      { grid-column: 5; grid-row: 1; }
-        
-        .b-ventajas      { grid-column: 1; grid-row: 2; }
-        .b-canales       { grid-column: 2; grid-row: 2; }
-        .b-segmento      { grid-column: 4; grid-row: 2 / span 2; }
-
-        .b-costos        { grid-column: 1 / span 3; grid-row: 3; background: #f1f5f9; }
-        .b-ingresos      { grid-column: 5; grid-row: 3; background: #f1f5f9; }
-
-        /* 🎯 CUADRO DE TEXTO EMERGE EN EL CENTRO EXACTO DE LA PANTALLA */
+        /* 🎯 CUADRO DE TEXTO AL CENTRO DE LA PANTALLA */
         .modal-overlay {
-            display: none;
+            display: none; /* Oculto por defecto */
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.75);
@@ -121,12 +125,6 @@
             position: relative;
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
             box-sizing: border-box;
-            animation: zoomIn 0.2s ease-out;
-        }
-
-        @keyframes zoomIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
         }
 
         .info-panel h3 {
@@ -149,7 +147,7 @@
             font-size: 1.05rem;
         }
 
-        /* Botón de cierre X */
+        /* Botón X para cerrar */
         .close-btn {
             position: absolute;
             top: 15px;
@@ -168,9 +166,15 @@
             color: #ef4444;
         }
 
+        /* Vista responsiva para celulares */
         @media (max-width: 900px) {
-            .canvas-grid { display: flex; flex-direction: column; }
-            .box { min-height: 90px; }
+            .canvas-grid { 
+                display: flex; 
+                flex-direction: column; 
+            }
+            .box { 
+                min-height: 80px; 
+            }
         }
     </style>
 </head>
@@ -181,25 +185,23 @@
         <h2>(Solar System)</h2>
     </header>
 
+    <!-- El lienzo con el orden exacto de tu imagen -->
     <div class="canvas-grid">
-        <!-- Fila 1 -->
-        <div class="box b-problemas" onclick="showInfo('problemas')">1. Problemas</div>
-        <div class="box b-alternativas" onclick="showInfo('alternativas')">1b. Alternativas</div>
-        <div class="box b-propuesta" onclick="showInfo('propuesta')">3. Propuesta de Valor</div>
-        <div class="box b-solucion" onclick="showInfo('solucion')">4. Solución</div>
-        <div class="box b-metricas" onclick="showInfo('metricas')">8. Métricas</div>
+        <div class="box b-prob" onclick="showInfo('problemas')">1. Problemas</div>
+        <div class="box b-alt" onclick="showInfo('alternativas')">1b. Alternativas</div>
+        <div class="box b-prop" onclick="showInfo('propuesta')">3. Propuesta de Valor</div>
+        <div class="box b-sol" onclick="showInfo('solucion')">4. Solución</div>
+        <div class="box b-met" onclick="showInfo('metricas')">8. Métricas</div>
+        
+        <div class="box b-vent" onclick="showInfo('ventajas')">9. Ventajas Competitivas</div>
+        <div class="box b-can" onclick="showInfo('canales')">5. Canales</div>
+        <div class="box b-seg" onclick="showInfo('segmento')">2. Segmento de Clientes</div>
 
-        <!-- Fila 2 -->
-        <div class="box b-ventajas" onclick="showInfo('ventajas')">9. Ventajas Competitivas</div>
-        <div class="box b-canales" onclick="showInfo('canales')">5. Canales</div>
-        <div class="box b-segmento" onclick="showInfo('segmento')">2. Segmento de Clientes</div>
-
-        <!-- Fila 3 -->
-        <div class="box b-costos" onclick="showInfo('costos')">7. Estructura de Costos</div>
-        <div class="box b-ingresos" onclick="showInfo('ingresos')">6. Flujo de Ingresos</div>
+        <div class="box b-cost" onclick="showInfo('costos')">7. Estructura de Costos</div>
+        <div class="box b-ingr" onclick="showInfo('ingresos')">6. Flujo de Ingresos</div>
     </div>
 
-    <!-- Contenedor del centro de pantalla para el cuadro de texto -->
+    <!-- Contenedor del cuadro de texto central -->
     <div id="modalOverlay" class="modal-overlay" onclick="closeOnOutside(event)">
         <div class="info-panel">
             <button class="close-btn" onclick="hideInfo()">&times;</button>
@@ -209,6 +211,7 @@
     </div>
 
     <script>
+        // Textos del Lean Canvas para tu negocio en La Paz
         const canvasData = {
             problemas: {
                 title: "1. Problemas",
@@ -216,7 +219,7 @@
             },
             alternativas: {
                 title: "1b. Alternativas",
-                content: "<ul><li>Comprar en las tiendas tradicionales de la Eloy Salmón o centros comerciales tecnológicos.</li><li>Pedir el producto por internet a páginas de afuera (asumiendo largas esperas y riesgos de pérdida).</li></ul>"
+                content: "<ul><li>Comprar en las tiendas tradicionales de la Eloy Salmón o centros comerciales tecnológicos.</li><li>Pedir el producto por internet a páginas de afuera (asumiendo largas eras y riesgos de pérdida).</li></ul>"
             },
             solucion: {
                 title: "4. Solución",
@@ -260,12 +263,12 @@
             if (canvasData[key]) {
                 pTitle.innerText = canvasData[key].title;
                 pBody.innerHTML = canvasData[key].content;
-                overlay.style.display = 'flex';
+                overlay.style.display = 'flex'; // Muestra la caja en el centro
             }
         }
 
         function hideInfo() {
-            overlay.style.display = 'none';
+            overlay.style.display = 'none'; // Oculta la caja
         }
 
         function closeOnOutside(event) {
