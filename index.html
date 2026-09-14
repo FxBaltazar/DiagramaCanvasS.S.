@@ -8,83 +8,257 @@
 
     <style>
 
-        /* ==============================
-           CONFIGURACIÓN GENERAL
-        ============================== */
+        /* =====================================================
+           VARIABLES SOLARES
+        ===================================================== */
 
         :root {
-            --bg-dark: #0f172a;
-            --bg-canvas: #ffffff;
-            --border-color: #cbd5e1;
-            --text-dark: #1e293b;
-            --text-light: #ffffff;
-            --accent: #2563eb;
-            --accent-bg: #eff6ff;
+            --space-1: #020617;
+            --space-2: #0b1120;
+            --space-3: #111827;
+
+            --star: #ffffff;
+
+            --blue: #38bdf8;
+            --cyan: #22d3ee;
+            --violet: #a78bfa;
+            --purple: #8b5cf6;
+            --gold: #fbbf24;
+            --orange: #fb923c;
+
+            --text: #e2e8f0;
+            --text-dark: #172033;
+
+            --panel: rgba(15, 23, 42, 0.88);
+
+            --border: rgba(148, 163, 184, 0.35);
         }
+
+
+        /* =====================================================
+           CONFIGURACIÓN GENERAL
+        ===================================================== */
 
         * {
             box-sizing: border-box;
         }
 
+
+        html {
+            min-height: 100%;
+        }
+
+
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
+
+            font-family:
+                'Segoe UI',
+                system-ui,
+                sans-serif;
 
             margin: 0;
+
             padding: 20px;
 
             min-height: 100vh;
 
+            color: var(--text);
+
             display: flex;
+
             flex-direction: column;
+
             align-items: center;
+
+            overflow-x: hidden;
+
+
+            /* ESPACIO PROFUNDO */
+
+            background:
+
+                radial-gradient(
+                    circle at 20% 20%,
+                    rgba(56, 189, 248, 0.12),
+                    transparent 25%
+                ),
+
+                radial-gradient(
+                    circle at 80% 30%,
+                    rgba(139, 92, 246, 0.14),
+                    transparent 28%
+                ),
+
+                radial-gradient(
+                    circle at 50% 90%,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 30%
+                ),
+
+                linear-gradient(
+                    135deg,
+                    var(--space-1),
+                    var(--space-2),
+                    var(--space-3)
+                );
+
+            position: relative;
         }
 
 
-        /* ==============================
+        /* =====================================================
+           ESTRELLAS
+        ===================================================== */
+
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            opacity: 0.65;
+
+            background-image:
+
+                radial-gradient(
+                    1px 1px at 10% 20%,
+                    white,
+                    transparent
+                ),
+
+                radial-gradient(
+                    1px 1px at 25% 70%,
+                    white,
+                    transparent
+                ),
+
+                radial-gradient(
+                    1px 1px at 42% 30%,
+                    white,
+                    transparent
+                ),
+
+                radial-gradient(
+                    1px 1px at 63% 15%,
+                    white,
+                    transparent
+                ),
+
+                radial-gradient(
+                    1px 1px at 78% 65%,
+                    white,
+                    transparent
+                ),
+
+                radial-gradient(
+                    1px 1px at 91% 35%,
+                    white,
+                    transparent
+                ),
+
+                radial-gradient(
+                    1px 1px at 54% 82%,
+                    white,
+                    transparent
+                ),
+
+                radial-gradient(
+                    1px 1px at 15% 90%,
+                    white,
+                    transparent
+                );
+
+            z-index: 0;
+        }
+
+
+        /* =====================================================
            ENCABEZADO
-        ============================== */
+        ===================================================== */
 
         header {
+
             text-align: center;
+
             margin-bottom: 25px;
+
+            position: relative;
+
+            z-index: 2;
         }
+
 
         header h1 {
-            font-size: 2.2rem;
+
             margin: 0;
-            color: #38bdf8;
+
+            font-size: 2.35rem;
+
+            letter-spacing: 2px;
+
+            color: var(--blue);
+
+            text-shadow:
+
+                0 0 8px rgba(56, 189, 248, 0.7),
+
+                0 0 25px rgba(56, 189, 248, 0.3);
         }
 
+
         header h2 {
-            font-size: 1.4rem;
+
+            margin: 6px 0 0;
+
+            font-size: 1.1rem;
+
             font-weight: 400;
-            margin: 5px 0 0 0;
+
+            letter-spacing: 4px;
+
             color: #94a3b8;
         }
 
 
-        /* ==============================
+        /* pequeño indicador */
+
+        header::after {
+
+            content: "✦  SOLAR SYSTEM BUSINESS MODEL  ✦";
+
+            display: block;
+
+            margin-top: 12px;
+
+            font-size: 0.7rem;
+
+            letter-spacing: 3px;
+
+            color: var(--violet);
+
+            opacity: 0.8;
+        }
+
+
+        /* =====================================================
            CANVAS
-        ============================== */
+        ===================================================== */
 
         .canvas-grid {
 
+            position: relative;
+
+            z-index: 2;
+
             display: grid;
 
-            /*
-                10 columnas permiten dividir
-                correctamente la parte inferior
-                en dos mitades.
-            */
             grid-template-columns:
                 repeat(10, 1fr);
 
-            /*
-                Dos filas superiores
-                + una fila inferior.
-            */
             grid-template-rows:
                 150px
                 150px
@@ -92,42 +266,51 @@
 
             grid-template-areas:
 
-                /*
-                FILA 1
-                */
                 "prob prob sol sol prop prop vent vent seg seg"
 
-                /*
-                FILA 2
-                */
                 "alt alt met met prop prop can can seg seg"
 
-                /*
-                FILA 3
-                */
                 "cost cost cost cost cost ingr ingr ingr ingr ingr";
 
-            gap: 0;
-
             width: 100%;
+
             max-width: 1250px;
 
-            background: var(--bg-canvas);
+            overflow: hidden;
 
-            padding: 0;
+            border-radius: 16px;
 
-            border-radius: 8px;
+
+            /* PANEL ESPACIAL */
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.97),
+                    rgba(241,245,249,0.97)
+                );
+
+
+            border:
+
+                1px solid
+                rgba(125, 211, 252, 0.45);
+
 
             box-shadow:
-                0 10px 30px rgba(0, 0, 0, 0.5);
 
-            overflow: hidden;
+                0 0 0 1px rgba(139, 92, 246, 0.15),
+
+                0 0 35px rgba(56, 189, 248, 0.15),
+
+                0 20px 60px rgba(0, 0, 0, 0.6);
         }
 
 
-        /* ==============================
+        /* =====================================================
            POSICIONES
-        ============================== */
+        ===================================================== */
 
         .b-prob {
             grid-area: prob;
@@ -170,19 +353,24 @@
         }
 
 
-        /* ==============================
+        /* =====================================================
            RECUADROS
-        ============================== */
+        ===================================================== */
 
         .box {
 
-            border: 1px solid var(--border-color);
+            position: relative;
+
+            border:
+
+                1px solid
+                rgba(100, 116, 139, 0.35);
 
             color: var(--text-dark);
 
             cursor: pointer;
 
-            font-weight: bold;
+            font-weight: 700;
 
             font-size: 1rem;
 
@@ -196,70 +384,351 @@
 
             padding: 15px;
 
-            background-color: #f8fafc;
+            background:
+
+                linear-gradient(
+                    145deg,
+                    rgba(248,250,252,0.98),
+                    rgba(226,232,240,0.94)
+                );
 
             transition:
-                background-color 0.2s,
-                border-color 0.2s,
-                transform 0.2s,
-                box-shadow 0.2s;
 
-            position: relative;
+                transform 0.25s ease,
 
-            z-index: 1;
+                background 0.25s ease,
+
+                border-color 0.25s ease,
+
+                box-shadow 0.25s ease;
+
+            overflow: hidden;
         }
 
 
-        /* Efecto al pasar el mouse */
+        /* línea luminosa */
+
+        .box::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+
+            top: 0;
+
+            width: 4px;
+
+            height: 100%;
+
+            background:
+
+                linear-gradient(
+                    to bottom,
+                    var(--blue),
+                    var(--violet)
+                );
+
+            opacity: 0.65;
+
+            transition: 0.25s;
+        }
+
+
+        /* brillo interior */
+
+        .box::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 100px;
+
+            height: 100px;
+
+            border-radius: 50%;
+
+            background:
+
+                radial-gradient(
+                    circle,
+                    rgba(56,189,248,0.16),
+                    transparent 70%
+                );
+
+            top: -55px;
+
+            right: -40px;
+
+            pointer-events: none;
+        }
+
+
+        /* =====================================================
+           HOVER
+        ===================================================== */
 
         .box:hover {
 
-            background-color: var(--accent-bg);
+            transform: scale(1.025);
 
-            border-color: var(--accent);
+            background:
 
-            transform: scale(1.015);
+                linear-gradient(
+                    145deg,
+                    #ffffff,
+                    #eef6ff
+                );
+
+            border-color: var(--blue);
 
             box-shadow:
-                0 4px 15px rgba(37, 99, 235, 0.15);
+
+                inset 0 0 20px
+                rgba(56,189,248,0.08),
+
+                0 0 18px
+                rgba(56,189,248,0.25);
 
             z-index: 5;
         }
 
 
-        /* Propuesta de valor destacada */
+        .box:hover::before {
+
+            width: 7px;
+
+            opacity: 1;
+
+            box-shadow:
+
+                0 0 12px var(--blue);
+        }
+
+
+        /* =====================================================
+           COLORES INDIVIDUALES
+        ===================================================== */
+
+
+        /* PROBLEMAS */
+
+        .b-prob::before {
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    #ef4444,
+                    #f97316
+                );
+        }
+
+
+        /* SOLUCIÓN */
+
+        .b-sol::before {
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    var(--blue),
+                    var(--cyan)
+                );
+        }
+
+
+        /* PROPUESTA DE VALOR */
 
         .b-prop {
 
-            background: var(--accent-bg);
+            background:
 
-            border: 2px solid var(--accent);
+                linear-gradient(
+                    145deg,
+                    #eff6ff,
+                    #eef2ff
+                );
 
+            border:
+
+                2px solid
+                rgba(99,102,241,0.55);
+
+            box-shadow:
+
+                inset 0 0 25px
+                rgba(99,102,241,0.08),
+
+                0 0 20px
+                rgba(99,102,241,0.12);
         }
 
 
-        /* Segmento */
+        .b-prop::before {
+
+            width: 6px;
+
+            background:
+
+                linear-gradient(
+                    to bottom,
+                    var(--gold),
+                    var(--orange),
+                    var(--purple)
+                );
+        }
+
+
+        .b-prop:hover {
+
+            border-color: var(--violet);
+
+            box-shadow:
+
+                inset 0 0 30px
+                rgba(139,92,246,0.12),
+
+                0 0 25px
+                rgba(139,92,246,0.28);
+        }
+
+
+        /* VENTAJAS */
+
+        .b-vent::before {
+
+            background:
+
+                linear-gradient(
+                    to bottom,
+                    var(--gold),
+                    #f59e0b
+                );
+        }
+
+
+        /* SEGMENTO */
 
         .b-seg {
 
-            background: #f8fafc;
+            background:
 
+                linear-gradient(
+                    145deg,
+                    #f8fafc,
+                    #e0f2fe
+                );
+        }
+
+        .b-seg::before {
+
+            background:
+
+                linear-gradient(
+                    to bottom,
+                    var(--cyan),
+                    var(--blue)
+                );
         }
 
 
-        /* Parte inferior */
+        /* ALTERNATIVAS */
 
-        .b-cost,
+        .b-alt::before {
+
+            background:
+
+                linear-gradient(
+                    to bottom,
+                    #8b5cf6,
+                    #c084fc
+                );
+        }
+
+
+        /* MÉTRICAS */
+
+        .b-met::before {
+
+            background:
+
+                linear-gradient(
+                    to bottom,
+                    #14b8a6,
+                    #22d3ee
+                );
+        }
+
+
+        /* CANALES */
+
+        .b-can::before {
+
+            background:
+
+                linear-gradient(
+                    to bottom,
+                    #6366f1,
+                    #a78bfa
+                );
+        }
+
+
+        /* COSTOS */
+
+        .b-cost {
+
+            background:
+
+                linear-gradient(
+                    145deg,
+                    #f8fafc,
+                    #e2e8f0
+                );
+        }
+
+        .b-cost::before {
+
+            background:
+
+                linear-gradient(
+                    to bottom,
+                    #64748b,
+                    #475569
+                );
+        }
+
+
+        /* INGRESOS */
+
         .b-ingr {
 
-            background: #f1f5f9;
+            background:
 
+                linear-gradient(
+                    145deg,
+                    #fffbeb,
+                    #fef3c7
+                );
+        }
+
+        .b-ingr::before {
+
+            background:
+
+                linear-gradient(
+                    to bottom,
+                    #f59e0b,
+                    #fbbf24
+                );
         }
 
 
-        /* ==============================
-           VENTANA EMERGENTE
-        ============================== */
+        /* =====================================================
+           MODAL
+        ===================================================== */
 
         .modal-overlay {
 
@@ -267,16 +736,19 @@
 
             position: fixed;
 
-            top: 0;
-            left: 0;
-
-            width: 100%;
-            height: 100%;
+            inset: 0;
 
             background:
-                rgba(15, 23, 42, 0.78);
 
-            backdrop-filter: blur(5px);
+                radial-gradient(
+                    circle at center,
+                    rgba(56,189,248,0.08),
+                    transparent 35%
+                ),
+
+                rgba(2,6,23,0.82);
+
+            backdrop-filter: blur(7px);
 
             justify-content: center;
 
@@ -288,115 +760,201 @@
         }
 
 
-        /* ==============================
-           PANEL DE INFORMACIÓN
-        ============================== */
+        /* =====================================================
+           PANEL CENTRAL
+        ===================================================== */
 
         .info-panel {
 
-            background: #ffffff;
-
-            color: var(--text-dark);
-
-            border: 3px solid var(--accent);
-
-            border-radius: 12px;
-
-            padding: 30px;
+            position: relative;
 
             width: 90%;
 
-            max-width: 550px;
+            max-width: 570px;
 
             max-height: 80vh;
 
             overflow-y: auto;
 
-            position: relative;
+            padding: 32px;
+
+            color: #dbeafe;
+
+
+            background:
+
+                linear-gradient(
+                    145deg,
+                    rgba(15,23,42,0.97),
+                    rgba(17,24,39,0.97)
+                );
+
+
+            border:
+
+                1px solid
+                rgba(56,189,248,0.65);
+
+
+            border-radius: 16px;
+
 
             box-shadow:
-                0 25px 50px -12px rgba(0, 0, 0, 0.6);
+
+                0 0 0 1px
+                rgba(139,92,246,0.15),
+
+                0 0 30px
+                rgba(56,189,248,0.2),
+
+                0 30px 80px
+                rgba(0,0,0,0.7);
+
 
             animation:
+
                 aparecer 0.25s ease;
         }
 
 
-        /* Animación */
+        /* borde luminoso */
+
+        .info-panel::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+
+            left: 12%;
+
+            width: 76%;
+
+            height: 2px;
+
+            background:
+
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--cyan),
+                    var(--violet),
+                    transparent
+                );
+
+            box-shadow:
+
+                0 0 15px
+                var(--cyan);
+        }
+
+
+        /* =====================================================
+           ANIMACIÓN
+        ===================================================== */
 
         @keyframes aparecer {
 
             from {
+
                 opacity: 0;
-                transform: scale(0.92) translateY(10px);
+
+                transform:
+                    scale(0.9)
+                    translateY(15px);
+
             }
 
             to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
 
+                opacity: 1;
+
+                transform:
+                    scale(1)
+                    translateY(0);
+
+            }
         }
 
 
-        /* ==============================
-           TÍTULO DEL PANEL
-        ============================== */
+        /* =====================================================
+           TÍTULO DEL MODAL
+        ===================================================== */
 
         .info-panel h3 {
 
             margin-top: 0;
 
-            color: var(--accent);
+            margin-bottom: 20px;
 
-            font-size: 1.4rem;
+            padding-bottom: 12px;
+
+            padding-right: 40px;
+
+            font-size: 1.45rem;
+
+            color: var(--cyan);
+
+            letter-spacing: 0.5px;
 
             border-bottom:
-                2px solid #e2e8f0;
 
-            padding-bottom: 10px;
+                1px solid
+                rgba(148,163,184,0.25);
 
-            margin-bottom: 18px;
+            text-shadow:
 
-            padding-right: 35px;
+                0 0 10px
+                rgba(34,211,238,0.35);
         }
 
 
-        /* ==============================
-           TEXTO
-        ============================== */
+        /* =====================================================
+           TEXTO MODAL
+        ===================================================== */
 
         .info-panel p {
 
             font-size: 1.05rem;
 
-            line-height: 1.6;
+            line-height: 1.7;
 
             margin: 0;
+
+            color: #dbeafe;
         }
 
 
         .info-panel ul {
 
+            margin: 0;
+
             padding-left: 22px;
 
-            line-height: 1.6;
-
-            margin: 0;
+            line-height: 1.7;
         }
 
 
         .info-panel li {
 
-            margin-bottom: 10px;
+            margin-bottom: 12px;
 
-            font-size: 1.05rem;
+            font-size: 1.02rem;
+
+            color: #dbeafe;
         }
 
 
-        /* ==============================
+        .info-panel strong {
+
+            color: var(--gold);
+        }
+
+
+        /* =====================================================
            BOTÓN CERRAR
-        ============================== */
+        ===================================================== */
 
         .close-btn {
 
@@ -406,7 +964,11 @@
 
             right: 17px;
 
-            font-size: 30px;
+            width: 35px;
+
+            height: 35px;
+
+            font-size: 27px;
 
             font-weight: bold;
 
@@ -416,29 +978,65 @@
 
             border: none;
 
-            background: none;
+            background: transparent;
 
-            padding: 0;
-
-            line-height: 1;
+            border-radius: 50%;
 
             transition:
+
                 color 0.2s,
+
+                background 0.2s,
+
                 transform 0.2s;
         }
 
 
         .close-btn:hover {
 
-            color: #ef4444;
+            color: #ffffff;
 
-            transform: scale(1.15);
+            background:
+
+                rgba(239,68,68,0.2);
+
+            transform: rotate(90deg);
         }
 
 
-        /* ==============================
-           RESPONSIVE
-        ============================== */
+        /* =====================================================
+           BARRA DE SCROLL DEL MODAL
+        ===================================================== */
+
+        .info-panel::-webkit-scrollbar {
+
+            width: 7px;
+        }
+
+
+        .info-panel::-webkit-scrollbar-track {
+
+            background:
+                rgba(15,23,42,0.5);
+        }
+
+
+        .info-panel::-webkit-scrollbar-thumb {
+
+            background:
+
+                linear-gradient(
+                    var(--cyan),
+                    var(--violet)
+                );
+
+            border-radius: 10px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE TABLET
+        ===================================================== */
 
         @media (max-width: 900px) {
 
@@ -446,21 +1044,25 @@
                 padding: 15px;
             }
 
+
             header h1 {
                 font-size: 1.8rem;
             }
 
+
             header h2 {
-                font-size: 1.1rem;
+                font-size: 1rem;
+                letter-spacing: 2px;
             }
+
 
             .canvas-grid {
 
-                display: grid;
+                grid-template-columns:
+                    1fr 1fr;
 
-                grid-template-columns: 1fr 1fr;
-
-                grid-template-rows: auto;
+                grid-template-rows:
+                    auto;
 
                 grid-template-areas:
 
@@ -475,17 +1077,47 @@
                     "seg seg"
 
                     "cost ingr";
-
-                gap: 0;
             }
 
+
             .box {
-                min-height: 100px;
+
+                min-height: 105px;
             }
         }
 
 
+        /* =====================================================
+           RESPONSIVE CELULAR
+        ===================================================== */
+
         @media (max-width: 550px) {
+
+            body {
+                padding: 10px;
+            }
+
+
+            header {
+                margin-bottom: 18px;
+            }
+
+
+            header h1 {
+                font-size: 1.55rem;
+            }
+
+
+            header h2 {
+                font-size: 0.85rem;
+            }
+
+
+            header::after {
+                font-size: 0.55rem;
+                letter-spacing: 2px;
+            }
+
 
             .canvas-grid {
 
@@ -514,39 +1146,50 @@
                     "ingr";
             }
 
+
             .box {
+
                 min-height: 90px;
+
+                font-size: 0.95rem;
             }
 
-            .info-panel {
 
-                padding: 25px 20px;
+            .info-panel {
 
                 width: 95%;
 
                 max-height: 85vh;
+
+                padding: 27px 20px;
             }
 
+
             .info-panel h3 {
+
                 font-size: 1.2rem;
             }
 
+
             .info-panel li,
             .info-panel p {
-                font-size: 0.98rem;
+
+                font-size: 0.95rem;
             }
+
         }
 
     </style>
+
 </head>
 
 
 <body>
 
 
-    <!-- ==============================
+    <!-- =====================================================
          ENCABEZADO
-    ============================== -->
+    ===================================================== -->
 
     <header>
 
@@ -558,14 +1201,12 @@
 
 
 
-    <!-- ==============================
+    <!-- =====================================================
          CANVAS
-    ============================== -->
+    ===================================================== -->
 
     <div class="canvas-grid">
 
-
-        <!-- PROBLEMAS -->
 
         <div
             class="box b-prob"
@@ -576,8 +1217,6 @@
         </div>
 
 
-        <!-- SOLUCIÓN -->
-
         <div
             class="box b-sol"
             onclick="showInfo('solucion')">
@@ -586,8 +1225,6 @@
 
         </div>
 
-
-        <!-- PROPUESTA DE VALOR -->
 
         <div
             class="box b-prop"
@@ -598,8 +1235,6 @@
         </div>
 
 
-        <!-- VENTAJAS COMPETITIVAS -->
-
         <div
             class="box b-vent"
             onclick="showInfo('ventajas')">
@@ -608,8 +1243,6 @@
 
         </div>
 
-
-        <!-- SEGMENTO DE CLIENTES -->
 
         <div
             class="box b-seg"
@@ -620,8 +1253,6 @@
         </div>
 
 
-        <!-- ALTERNATIVAS -->
-
         <div
             class="box b-alt"
             onclick="showInfo('alternativas')">
@@ -630,8 +1261,6 @@
 
         </div>
 
-
-        <!-- MÉTRICAS -->
 
         <div
             class="box b-met"
@@ -642,8 +1271,6 @@
         </div>
 
 
-        <!-- CANALES -->
-
         <div
             class="box b-can"
             onclick="showInfo('canales')">
@@ -653,8 +1280,6 @@
         </div>
 
 
-        <!-- ESTRUCTURA DE COSTOS -->
-
         <div
             class="box b-cost"
             onclick="showInfo('costos')">
@@ -663,8 +1288,6 @@
 
         </div>
 
-
-        <!-- FLUJO DE INGRESOS -->
 
         <div
             class="box b-ingr"
@@ -679,9 +1302,9 @@
 
 
 
-    <!-- ==============================
-         VENTANA DE INFORMACIÓN
-    ============================== -->
+    <!-- =====================================================
+         MODAL
+    ===================================================== -->
 
     <div
         id="modalOverlay"
@@ -718,21 +1341,16 @@
 
         </div>
 
-
     </div>
 
 
 
-    <!-- ==============================
+    <!-- =====================================================
          JAVASCRIPT
-    ============================== -->
+    ===================================================== -->
 
     <script>
 
-
-        /* ==================================
-           INFORMACIÓN DEL CANVAS
-        ================================== */
 
         const canvasData = {
 
@@ -943,10 +1561,9 @@
         };
 
 
-
-        /* ==================================
-           ELEMENTOS DEL MODAL
-        ================================== */
+        /* =====================================================
+           ELEMENTOS
+        ===================================================== */
 
         const overlay =
             document.getElementById("modalOverlay");
@@ -958,10 +1575,9 @@
             document.getElementById("panelBody");
 
 
-
-        /* ==================================
+        /* =====================================================
            MOSTRAR INFORMACIÓN
-        ================================== */
+        ===================================================== */
 
         function showInfo(key) {
 
@@ -982,10 +1598,9 @@
         }
 
 
-
-        /* ==================================
-           CERRAR INFORMACIÓN
-        ================================== */
+        /* =====================================================
+           CERRAR
+        ===================================================== */
 
         function hideInfo() {
 
@@ -996,10 +1611,9 @@
         }
 
 
-
-        /* ==================================
+        /* =====================================================
            CERRAR AL HACER CLICK AFUERA
-        ================================== */
+        ===================================================== */
 
         function closeOnOutside(event) {
 
@@ -1012,10 +1626,9 @@
         }
 
 
-
-        /* ==================================
+        /* =====================================================
            CERRAR CON ESC
-        ================================== */
+        ===================================================== */
 
         document.addEventListener(
             "keydown",
@@ -1032,7 +1645,6 @@
 
             }
         );
-
 
     </script>
 
