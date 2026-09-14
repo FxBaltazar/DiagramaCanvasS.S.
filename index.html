@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Diagrama Canvas - Solar System</title>
+
     <style>
+
+        /* ==============================
+           CONFIGURACIÓN GENERAL
+        ============================== */
+
         :root {
             --bg-dark: #0f172a;
             --bg-canvas: #ffffff;
@@ -15,18 +22,29 @@
             --accent-bg: #eff6ff;
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-light);
+
             margin: 0;
             padding: 20px;
+
+            min-height: 100vh;
+
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            box-sizing: border-box;
         }
+
+
+        /* ==============================
+           ENCABEZADO
+        ============================== */
 
         header {
             text-align: center;
@@ -46,233 +64,977 @@
             color: #94a3b8;
         }
 
-        /* 🔒 ESTRUCTURA FIJA BASADA STRICTAMENTE EN TU CAPTURA */
+
+        /* ==============================
+           CANVAS
+        ============================== */
+
         .canvas-grid {
+
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            grid-template-rows: 130px 130px 130px 130px;
+
+            /*
+                10 columnas permiten dividir
+                correctamente la parte inferior
+                en dos mitades.
+            */
+            grid-template-columns:
+                repeat(10, 1fr);
+
+            /*
+                Dos filas superiores
+                + una fila inferior.
+            */
+            grid-template-rows:
+                150px
+                150px
+                130px;
+
             grid-template-areas:
-                "prob alt prop sol met"
-                "vent can prop seg seg"
-                "cost cost cost seg seg"
-                "ingr ingr ingr seg seg";
-            gap: 15px;
+
+                /*
+                FILA 1
+                */
+                "prob prob sol sol prop prop vent vent seg seg"
+
+                /*
+                FILA 2
+                */
+                "alt alt met met prop prop can can seg seg"
+
+                /*
+                FILA 3
+                */
+                "cost cost cost cost cost ingr ingr ingr ingr ingr";
+
+            gap: 0;
+
             width: 100%;
-            max-width: 1200px;
+            max-width: 1250px;
+
             background: var(--bg-canvas);
-            padding: 20px;
+
+            padding: 0;
+
             border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            box-sizing: border-box;
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.5);
+
+            overflow: hidden;
         }
 
-        /* Asignación de cada bloque a su área fija */
-        .b-prob { grid-area: prob; }
-        .b-alt  { grid-area: alt; }
-        .b-prop { grid-area: prop; border: 2px solid var(--accent) !important; background: var(--accent-bg) !important; }
-        .b-sol  { grid-area: sol; }
-        .b-met  { grid-area: met; }
-        .b-vent { grid-area: vent; }
-        .b-can  { grid-area: can; }
-        .b-seg  { grid-area: seg; background: #f8fafc; }
-        .b-cost { grid-area: cost; background: #f1f5f9; }
-        .b-ingr { grid-area: ingr; background: #f1f5f9; }
 
-        /* Estilo general de los recuadros */
+        /* ==============================
+           POSICIONES
+        ============================== */
+
+        .b-prob {
+            grid-area: prob;
+        }
+
+        .b-sol {
+            grid-area: sol;
+        }
+
+        .b-prop {
+            grid-area: prop;
+        }
+
+        .b-vent {
+            grid-area: vent;
+        }
+
+        .b-seg {
+            grid-area: seg;
+        }
+
+        .b-alt {
+            grid-area: alt;
+        }
+
+        .b-met {
+            grid-area: met;
+        }
+
+        .b-can {
+            grid-area: can;
+        }
+
+        .b-cost {
+            grid-area: cost;
+        }
+
+        .b-ingr {
+            grid-area: ingr;
+        }
+
+
+        /* ==============================
+           RECUADROS
+        ============================== */
+
         .box {
+
             border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 15px;
+
             color: var(--text-dark);
+
             cursor: pointer;
+
             font-weight: bold;
+
             font-size: 1rem;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             text-align: center;
-            transition: transform 0.2s, background-color 0.2s;
+
+            padding: 15px;
+
             background-color: #f8fafc;
-            box-sizing: border-box;
+
+            transition:
+                background-color 0.2s,
+                border-color 0.2s,
+                transform 0.2s,
+                box-shadow 0.2s;
+
+            position: relative;
+
+            z-index: 1;
         }
+
+
+        /* Efecto al pasar el mouse */
 
         .box:hover {
+
             background-color: var(--accent-bg);
+
             border-color: var(--accent);
-            transform: scale(1.02);
+
+            transform: scale(1.015);
+
+            box-shadow:
+                0 4px 15px rgba(37, 99, 235, 0.15);
+
+            z-index: 5;
         }
 
-        /* 🎯 CUADRO DE TEXTO AL CENTRO DE LA PANTALLA */
+
+        /* Propuesta de valor destacada */
+
+        .b-prop {
+
+            background: var(--accent-bg);
+
+            border: 2px solid var(--accent);
+
+        }
+
+
+        /* Segmento */
+
+        .b-seg {
+
+            background: #f8fafc;
+
+        }
+
+
+        /* Parte inferior */
+
+        .b-cost,
+        .b-ingr {
+
+            background: #f1f5f9;
+
+        }
+
+
+        /* ==============================
+           VENTANA EMERGENTE
+        ============================== */
+
         .modal-overlay {
-            display: none; /* Oculto por defecto */
+
+            display: none;
+
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(4px);
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background:
+                rgba(15, 23, 42, 0.78);
+
+            backdrop-filter: blur(5px);
+
             justify-content: center;
+
             align-items: center;
+
+            padding: 20px;
+
             z-index: 99999;
         }
 
+
+        /* ==============================
+           PANEL DE INFORMACIÓN
+        ============================== */
+
         .info-panel {
+
             background: #ffffff;
+
             color: var(--text-dark);
+
             border: 3px solid var(--accent);
-            border-radius: 10px;
+
+            border-radius: 12px;
+
             padding: 30px;
+
             width: 90%;
-            max-width: 500px;
+
+            max-width: 550px;
+
+            max-height: 80vh;
+
+            overflow-y: auto;
+
             position: relative;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-            box-sizing: border-box;
+
+            box-shadow:
+                0 25px 50px -12px rgba(0, 0, 0, 0.6);
+
+            animation:
+                aparecer 0.25s ease;
         }
+
+
+        /* Animación */
+
+        @keyframes aparecer {
+
+            from {
+                opacity: 0;
+                transform: scale(0.92) translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+
+        }
+
+
+        /* ==============================
+           TÍTULO DEL PANEL
+        ============================== */
 
         .info-panel h3 {
+
             margin-top: 0;
+
             color: var(--accent);
-            font-size: 1.35rem;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 8px;
-            margin-bottom: 15px;
+
+            font-size: 1.4rem;
+
+            border-bottom:
+                2px solid #e2e8f0;
+
+            padding-bottom: 10px;
+
+            margin-bottom: 18px;
+
+            padding-right: 35px;
         }
 
-        .info-panel ul {
-            padding-left: 20px;
+
+        /* ==============================
+           TEXTO
+        ============================== */
+
+        .info-panel p {
+
+            font-size: 1.05rem;
+
             line-height: 1.6;
+
             margin: 0;
         }
 
+
+        .info-panel ul {
+
+            padding-left: 22px;
+
+            line-height: 1.6;
+
+            margin: 0;
+        }
+
+
         .info-panel li {
-            margin-bottom: 8px;
+
+            margin-bottom: 10px;
+
             font-size: 1.05rem;
         }
 
-        /* Botón X para cerrar */
+
+        /* ==============================
+           BOTÓN CERRAR
+        ============================== */
+
         .close-btn {
+
             position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 28px;
+
+            top: 12px;
+
+            right: 17px;
+
+            font-size: 30px;
+
             font-weight: bold;
+
             color: #94a3b8;
+
             cursor: pointer;
+
             border: none;
+
             background: none;
+
             padding: 0;
+
             line-height: 1;
+
+            transition:
+                color 0.2s,
+                transform 0.2s;
         }
+
 
         .close-btn:hover {
+
             color: #ef4444;
+
+            transform: scale(1.15);
         }
 
-        /* Vista responsiva para celulares */
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
         @media (max-width: 900px) {
-            .canvas-grid { 
-                display: flex; 
-                flex-direction: column; 
+
+            body {
+                padding: 15px;
             }
-            .box { 
-                min-height: 80px; 
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            header h2 {
+                font-size: 1.1rem;
+            }
+
+            .canvas-grid {
+
+                display: grid;
+
+                grid-template-columns: 1fr 1fr;
+
+                grid-template-rows: auto;
+
+                grid-template-areas:
+
+                    "prob sol"
+
+                    "alt met"
+
+                    "prop prop"
+
+                    "vent can"
+
+                    "seg seg"
+
+                    "cost ingr";
+
+                gap: 0;
+            }
+
+            .box {
+                min-height: 100px;
             }
         }
+
+
+        @media (max-width: 550px) {
+
+            .canvas-grid {
+
+                grid-template-columns: 1fr;
+
+                grid-template-areas:
+
+                    "prob"
+
+                    "alt"
+
+                    "sol"
+
+                    "met"
+
+                    "prop"
+
+                    "vent"
+
+                    "can"
+
+                    "seg"
+
+                    "cost"
+
+                    "ingr";
+            }
+
+            .box {
+                min-height: 90px;
+            }
+
+            .info-panel {
+
+                padding: 25px 20px;
+
+                width: 95%;
+
+                max-height: 85vh;
+            }
+
+            .info-panel h3 {
+                font-size: 1.2rem;
+            }
+
+            .info-panel li,
+            .info-panel p {
+                font-size: 0.98rem;
+            }
+        }
+
     </style>
 </head>
+
+
 <body>
 
+
+    <!-- ==============================
+         ENCABEZADO
+    ============================== -->
+
     <header>
+
         <h1>Diagrama Canvas</h1>
+
         <h2>(Solar System)</h2>
+
     </header>
 
-    <!-- El lienzo con el orden exacto de tu imagen -->
+
+
+    <!-- ==============================
+         CANVAS
+    ============================== -->
+
     <div class="canvas-grid">
-        <div class="box b-prob" onclick="showInfo('problemas')">1. Problemas</div>
-        <div class="box b-alt" onclick="showInfo('alternativas')">1b. Alternativas</div>
-        <div class="box b-prop" onclick="showInfo('propuesta')">3. Propuesta de Valor</div>
-        <div class="box b-sol" onclick="showInfo('solucion')">4. Solución</div>
-        <div class="box b-met" onclick="showInfo('metricas')">8. Métricas</div>
-        
-        <div class="box b-vent" onclick="showInfo('ventajas')">9. Ventajas Competitivas</div>
-        <div class="box b-can" onclick="showInfo('canales')">5. Canales</div>
-        <div class="box b-seg" onclick="showInfo('segmento')">2. Segmento de Clientes</div>
 
-        <div class="box b-cost" onclick="showInfo('costos')">7. Estructura de Costos</div>
-        <div class="box b-ingr" onclick="showInfo('ingresos')">6. Flujo de Ingresos</div>
-    </div>
 
-    <!-- Contenedor del cuadro de texto central -->
-    <div id="modalOverlay" class="modal-overlay" onclick="closeOnOutside(event)">
-        <div class="info-panel">
-            <button class="close-btn" onclick="hideInfo()">&times;</button>
-            <h3 id="panelTitle">Título</h3>
-            <div id="panelBody">Contenido</div>
+        <!-- PROBLEMAS -->
+
+        <div
+            class="box b-prob"
+            onclick="showInfo('problemas')">
+
+            1. Problemas
+
         </div>
+
+
+        <!-- SOLUCIÓN -->
+
+        <div
+            class="box b-sol"
+            onclick="showInfo('solucion')">
+
+            4. Solución
+
+        </div>
+
+
+        <!-- PROPUESTA DE VALOR -->
+
+        <div
+            class="box b-prop"
+            onclick="showInfo('propuesta')">
+
+            3. Propuesta de Valor
+
+        </div>
+
+
+        <!-- VENTAJAS COMPETITIVAS -->
+
+        <div
+            class="box b-vent"
+            onclick="showInfo('ventajas')">
+
+            9. Ventajas Competitivas
+
+        </div>
+
+
+        <!-- SEGMENTO DE CLIENTES -->
+
+        <div
+            class="box b-seg"
+            onclick="showInfo('segmento')">
+
+            2. Segmento de Clientes
+
+        </div>
+
+
+        <!-- ALTERNATIVAS -->
+
+        <div
+            class="box b-alt"
+            onclick="showInfo('alternativas')">
+
+            1b. Alternativas
+
+        </div>
+
+
+        <!-- MÉTRICAS -->
+
+        <div
+            class="box b-met"
+            onclick="showInfo('metricas')">
+
+            8. Métricas
+
+        </div>
+
+
+        <!-- CANALES -->
+
+        <div
+            class="box b-can"
+            onclick="showInfo('canales')">
+
+            5. Canales
+
+        </div>
+
+
+        <!-- ESTRUCTURA DE COSTOS -->
+
+        <div
+            class="box b-cost"
+            onclick="showInfo('costos')">
+
+            7. Estructura de Costos
+
+        </div>
+
+
+        <!-- FLUJO DE INGRESOS -->
+
+        <div
+            class="box b-ingr"
+            onclick="showInfo('ingresos')">
+
+            6. Flujo de Ingresos
+
+        </div>
+
+
     </div>
+
+
+
+    <!-- ==============================
+         VENTANA DE INFORMACIÓN
+    ============================== -->
+
+    <div
+        id="modalOverlay"
+        class="modal-overlay"
+        onclick="closeOnOutside(event)">
+
+
+        <div class="info-panel">
+
+
+            <button
+                class="close-btn"
+                onclick="hideInfo()"
+                aria-label="Cerrar">
+
+                &times;
+
+            </button>
+
+
+            <h3 id="panelTitle">
+
+                Título
+
+            </h3>
+
+
+            <div id="panelBody">
+
+                Contenido
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ==============================
+         JAVASCRIPT
+    ============================== -->
 
     <script>
-        // Textos del Lean Canvas para tu negocio en La Paz
+
+
+        /* ==================================
+           INFORMACIÓN DEL CANVAS
+        ================================== */
+
         const canvasData = {
+
+
             problemas: {
+
                 title: "1. Problemas",
-                content: "<ul><li>Precios muy altos en las tiendas de La Paz debido a que el producto pasa por muchos revendedores.</li><li>Poco stock de piezas modernas: Las tiendas locales suelen tardar meses en traer lo último del mercado.</li><li>Malas garantías: Muchas tiendas informales no quieren hacerse cargo de fallas o tardan demasiado.</li></ul>"
+
+                content: `
+                    <ul>
+
+                        <li>
+                            Precios muy altos en las tiendas de La Paz debido a que el producto pasa por muchos revendedores.
+                        </li>
+
+                        <li>
+                            Poco stock de piezas modernas: Las tiendas locales suelen tardar meses en traer lo último del mercado.
+                        </li>
+
+                        <li>
+                            Malas garantías: Muchas tiendas informales no quieren hacerse cargo de fallas o tardan demasiado.
+                        </li>
+
+                    </ul>
+                `
             },
+
+
             alternativas: {
+
                 title: "1b. Alternativas",
-                content: "<ul><li>Comprar en las tiendas tradicionales de la Eloy Salmón o centros comerciales tecnológicos.</li><li>Pedir el producto por internet a páginas de afuera (asumiendo largas eras y riesgos de pérdida).</li></ul>"
+
+                content: `
+                    <ul>
+
+                        <li>
+                            Comprar en las tiendas tradicionales de la Eloy Salmón o centros comerciales tecnológicos.
+                        </li>
+
+                        <li>
+                            Pedir el producto por internet a páginas de afuera (asumiendo largas esperas y riesgos de pérdida).
+                        </li>
+
+                    </ul>
+                `
             },
-            solucion: {
-                title: "4. Solución",
-                content: "<ul><li>Importación directa: Comprar directamente a distribuidores grandes del exterior para vender más barato en La Paz.</li><li>Pedidos personalizados: Si un cliente busca una pieza muy específica que no hay en el país, se la traemos por encargo.</li></ul>"
-            },
-            metricas: {
-                title: "8. Métricas",
-                content: "<ul><li>Número de clientes nuevos que nos compran cada mes.</li><li>Cantidad de personas que nos recomiendan con sus conocidos tras su compra.</li></ul>"
-            },
+
+
             propuesta: {
+
                 title: "3. Propuesta de Valor",
-                content: "<p><strong>'Traemos la mejor tecnología para tu computadora directo del extranjero, al precio más justo de La Paz y con garantía real'.</strong></p>"
+
+                content: `
+                    <p>
+
+                        <strong>
+                            "Traemos la mejor tecnología para tu computadora directo del extranjero, al precio más justo de La Paz y con garantía real".
+                        </strong>
+
+                    </p>
+                `
             },
-            ventajas: {
-                title: "9. Ventajas Competitivas",
-                content: "<ul><li>Rapidez y confianza: Traemos los productos en tiempo récord y ofrecemos un servicio técnico propio que soluciona cualquier falla de fábrica de inmediato, sin intermediarios.</li></ul>"
+
+
+            solucion: {
+
+                title: "4. Solución",
+
+                content: `
+                    <ul>
+
+                        <li>
+                            Importación directa: Comprar directamente a distribuidores grandes del exterior para vender más barato en La Paz.
+                        </li>
+
+                        <li>
+                            Pedidos personalizados: Si un cliente busca una pieza muy específica que no hay en el país, se la traemos por encargo.
+                        </li>
+
+                    </ul>
+                `
             },
+
+
             canales: {
+
                 title: "5. Canales",
-                content: "<ul><li>Venta por redes sociales (videos demostrativos en TikTok y Facebook Marketplace).</li><li>Atención y catálogo rápido a través de WhatsApp.</li><li>Entregas en puntos céntricos y seguros de la ciudad (o envíos a domicilio).</li></ul>"
+
+                content: `
+                    <ul>
+
+                        <li>
+                            Venta por redes sociales (videos demostrativos en TikTok y Facebook Marketplace).
+                        </li>
+
+                        <li>
+                            Atención y catálogo rápido a través de WhatsApp.
+                        </li>
+
+                        <li>
+                            Entregas en puntos céntricos y seguros de la ciudad (o envíos a domicilio).
+                        </li>
+
+                    </ul>
+                `
             },
-            segmento: {
-                title: "2. Segmento de Clientes",
-                content: "<ul><li>Jóvenes gamers que quieren armar o mejorar sus computadoras para jugar.</li><li>Diseñadores, editores de video y programadores que necesitan equipos potentes para trabajar rápido.</li></ul>"
-            },
-            costos: {
-                title: "7. Estructura de Costos",
-                content: "<ul><li>Dinero para comprar la mercadería afuera y pagar el transporte internacional.</li><li>Pago de los impuestos obligatorios en la Aduana de Bolivia.</li><li>Gastos en publicidad por internet para que más gente en La Paz conozca el negocio.</li></ul>"
-            },
+
+
             ingresos: {
+
                 title: "6. Flujo de Ingresos",
-                content: "<ul><li>Ganancia por la venta de las piezas de hardware (tarjetas de video, procesadores, memorias, etc.).</li><li>Cobro por el servicio de armado, limpieza y optimización de las computadoras.</li></ul>"
+
+                content: `
+                    <ul>
+
+                        <li>
+                            Ganancia por la venta de las piezas de hardware (tarjetas de video, procesadores, memorias, etc.).
+                        </li>
+
+                        <li>
+                            Cobro por el servicio de armado, limpieza y optimización de las computadoras.
+                        </li>
+
+                    </ul>
+                `
+            },
+
+
+            costos: {
+
+                title: "7. Estructura de Costos",
+
+                content: `
+                    <ul>
+
+                        <li>
+                            Dinero para comprar la mercadería afuera y pagar el transporte internacional.
+                        </li>
+
+                        <li>
+                            Pago de los impuestos obligatorios en la Aduana de Bolivia.
+                        </li>
+
+                        <li>
+                            Gastos en publicidad por internet para que más gente en La Paz conozca el negocio.
+                        </li>
+
+                    </ul>
+                `
+            },
+
+
+            metricas: {
+
+                title: "8. Métricas",
+
+                content: `
+                    <ul>
+
+                        <li>
+                            Número de clientes nuevos que nos compran cada mes.
+                        </li>
+
+                        <li>
+                            Cantidad de personas que nos recomiendan con sus conocidos tras su compra.
+                        </li>
+
+                    </ul>
+                `
+            },
+
+
+            ventajas: {
+
+                title: "9. Ventajas Competitivas",
+
+                content: `
+                    <ul>
+
+                        <li>
+                            Rapidez y confianza: Traemos los productos en tiempo récord y ofrecemos un servicio técnico propio que soluciona cualquier falla de fábrica de inmediato, sin intermediarios.
+                        </li>
+
+                    </ul>
+                `
+            },
+
+
+            segmento: {
+
+                title: "2. Segmento de Clientes",
+
+                content: `
+                    <ul>
+
+                        <li>
+                            Jóvenes gamers que quieren armar o mejorar sus computadoras para jugar.
+                        </li>
+
+                        <li>
+                            Diseñadores, editores de video y programadores que necesitan equipos potentes para trabajar rápido.
+                        </li>
+
+                    </ul>
+                `
             }
+
         };
 
-        const overlay = document.getElementById('modalOverlay');
-        const pTitle = document.getElementById('panelTitle');
-        const pBody = document.getElementById('panelBody');
+
+
+        /* ==================================
+           ELEMENTOS DEL MODAL
+        ================================== */
+
+        const overlay =
+            document.getElementById("modalOverlay");
+
+        const pTitle =
+            document.getElementById("panelTitle");
+
+        const pBody =
+            document.getElementById("panelBody");
+
+
+
+        /* ==================================
+           MOSTRAR INFORMACIÓN
+        ================================== */
 
         function showInfo(key) {
+
             if (canvasData[key]) {
-                pTitle.innerText = canvasData[key].title;
-                pBody.innerHTML = canvasData[key].content;
-                overlay.style.display = 'flex'; // Muestra la caja en el centro
+
+                pTitle.innerText =
+                    canvasData[key].title;
+
+                pBody.innerHTML =
+                    canvasData[key].content;
+
+                overlay.style.display = "flex";
+
+                document.body.style.overflow =
+                    "hidden";
             }
+
         }
+
+
+
+        /* ==================================
+           CERRAR INFORMACIÓN
+        ================================== */
 
         function hideInfo() {
-            overlay.style.display = 'none'; // Oculta la caja
+
+            overlay.style.display = "none";
+
+            document.body.style.overflow =
+                "";
         }
 
+
+
+        /* ==================================
+           CERRAR AL HACER CLICK AFUERA
+        ================================== */
+
         function closeOnOutside(event) {
+
             if (event.target === overlay) {
+
                 hideInfo();
+
             }
+
         }
+
+
+
+        /* ==================================
+           CERRAR CON ESC
+        ================================== */
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    event.key === "Escape" &&
+                    overlay.style.display === "flex"
+                ) {
+
+                    hideInfo();
+
+                }
+
+            }
+        );
+
+
+    </script>
+
+</body>
+</html>
