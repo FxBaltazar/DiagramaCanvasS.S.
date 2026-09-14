@@ -24,6 +24,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
         }
 
         header {
@@ -44,11 +45,11 @@
             color: #94a3b8;
         }
 
-        /* Rejilla exacta basada en tu última imagen */
+        /* 🔒 REJILLA CON COORDENADAS CONGELADAS (NO SE MUEVE) */
         .canvas-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            grid-auto-rows: minmax(130px, auto);
+            grid-template-rows: 140px 140px 120px;
             gap: 15px;
             width: 100%;
             max-width: 1200px;
@@ -56,7 +57,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            margin-bottom: 20px;
+            box-sizing: border-box;
         }
 
         /* Estilo base para cada recuadro */
@@ -64,7 +65,7 @@
             background: #f8fafc;
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            padding: 20px;
+            padding: 15px;
             color: var(--text-dark);
             cursor: pointer;
             font-weight: bold;
@@ -83,45 +84,55 @@
             transform: scale(1.02);
         }
 
-        /* Clases de posicionamiento */
-        .double-row {
-            grid-row: span 2;
-        }
+        /* Posicionamiento milimétrico basado en tu captura */
+        .b-problemas     { grid-column: 1; grid-row: 1; }
+        .b-alternativas  { grid-column: 2; grid-row: 1; }
+        .b-propuesta     { grid-column: 3; grid-row: 1 / span 2; border: 2px solid var(--accent); background: var(--accent-bg); }
+        .b-solucion      { grid-column: 4; grid-row: 1; }
+        .b-metricas      { grid-column: 5; grid-row: 1; }
+        
+        .b-ventajas      { grid-column: 1; grid-row: 2; }
+        .b-canales       { grid-column: 2; grid-row: 2; }
+        .b-segmento      { grid-column: 4; grid-row: 2 / span 2; }
 
-        .propuesta-box {
-            grid-row: span 2;
-            border: 2px solid var(--accent);
-            background: var(--accent-bg);
-        }
+        .b-costos        { grid-column: 1 / span 3; grid-row: 3; background: #f1f5f9; }
+        .b-ingresos      { grid-column: 5; grid-row: 3; background: #f1f5f9; }
 
-        .wide-3 {
-            grid-column: span 3;
-        }
-
-        .wide-2 {
-            grid-column: span 2;
-        }
-
-        /* 📋 PANEL O CAMPO DE TEXTO PARA LA INFORMACIÓN */
-        .info-panel {
+        /* 🎯 CUADRO DE TEXTO EMERGE EN EL CENTRO EXACTO DE LA PANTALLA */
+        .modal-overlay {
             display: none;
-            width: 100%;
-            max-width: 1200px;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+        }
+
+        .info-panel {
             background: #ffffff;
             color: var(--text-dark);
             border: 3px solid var(--accent);
-            border-radius: 8px;
-            padding: 25px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
             position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
             box-sizing: border-box;
-            margin-top: 10px;
+            animation: zoomIn 0.2s ease-out;
+        }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .info-panel h3 {
             margin-top: 0;
             color: var(--accent);
-            font-size: 1.3rem;
+            font-size: 1.35rem;
             border-bottom: 2px solid #e2e8f0;
             padding-bottom: 8px;
             margin-bottom: 15px;
@@ -172,27 +183,29 @@
 
     <div class="canvas-grid">
         <!-- Fila 1 -->
-        <div class="box" onclick="showInfo('problemas')">1. Problemas</div>
-        <div class="box" onclick="showInfo('alternativas')">1b. Alternativas</div>
-        <div class="box propuesta-box" onclick="showInfo('propuesta')">3. Propuesta de Valor</div>
-        <div class="box" onclick="showInfo('solucion')">4. Solución</div>
-        <div class="box" onclick="showInfo('metricas')">8. Métricas</div>
+        <div class="box b-problemas" onclick="showInfo('problemas')">1. Problemas</div>
+        <div class="box b-alternativas" onclick="showInfo('alternativas')">1b. Alternativas</div>
+        <div class="box b-propuesta" onclick="showInfo('propuesta')">3. Propuesta de Valor</div>
+        <div class="box b-solucion" onclick="showInfo('solucion')">4. Solución</div>
+        <div class="box b-metricas" onclick="showInfo('metricas')">8. Métricas</div>
 
         <!-- Fila 2 -->
-        <div class="box" onclick="showInfo('ventajas')">9. Ventajas Competitivas</div>
-        <div class="box" onclick="showInfo('canales')">5. Canales</div>
-        <div class="box double-row" onclick="showInfo('segmento')">2. Segmento de Clientes</div>
+        <div class="box b-ventajas" onclick="showInfo('ventajas')">9. Ventajas Competitivas</div>
+        <div class="box b-canales" onclick="showInfo('canales')">5. Canales</div>
+        <div class="box b-segmento" onclick="showInfo('segmento')">2. Segmento de Clientes</div>
 
-        <!-- Fila 3 e Inferior -->
-        <div class="box wide-2" onclick="showInfo('costos')">7. Estructura de Costos</div>
-        <div class="box wide-3" style="grid-column: 1 / 4;" onclick="showInfo('ingresos')">6. Flujo de Ingresos</div>
+        <!-- Fila 3 -->
+        <div class="box b-costos" onclick="showInfo('costos')">7. Estructura de Costos</div>
+        <div class="box b-ingresos" onclick="showInfo('ingresos')">6. Flujo de Ingresos</div>
     </div>
 
-    <!-- Campo de texto dinámico para la información -->
-    <div id="infoPanel" class="info-panel">
-        <button class="close-btn" onclick="hideInfo()">&times;</button>
-        <h3 id="panelTitle">Título</h3>
-        <div id="panelBody">Contenido</div>
+    <!-- Contenedor del centro de pantalla para el cuadro de texto -->
+    <div id="modalOverlay" class="modal-overlay" onclick="closeOnOutside(event)">
+        <div class="info-panel">
+            <button class="close-btn" onclick="hideInfo()">&times;</button>
+            <h3 id="panelTitle">Título</h3>
+            <div id="panelBody">Contenido</div>
+        </div>
     </div>
 
     <script>
@@ -239,7 +252,7 @@
             }
         };
 
-        const panel = document.getElementById('infoPanel');
+        const overlay = document.getElementById('modalOverlay');
         const pTitle = document.getElementById('panelTitle');
         const pBody = document.getElementById('panelBody');
 
@@ -247,14 +260,16 @@
             if (canvasData[key]) {
                 pTitle.innerText = canvasData[key].title;
                 pBody.innerHTML = canvasData[key].content;
-                panel.style.display = 'block';
-                panel.scrollIntoView({ behavior: 'smooth' });
+                overlay.style.display = 'flex';
             }
         }
 
         function hideInfo() {
-            panel.style.display = 'none';
+            overlay.style.display = 'none';
         }
-    </script>
-</body>
-</html>
+
+        function closeOnOutside(event) {
+            if (event.target === overlay) {
+                hideInfo();
+            }
+        }
